@@ -1,0 +1,16 @@
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+mat-card {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+}

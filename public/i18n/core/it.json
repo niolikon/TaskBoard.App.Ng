@@ -1,0 +1,5 @@
+{
+  "CORE__FORM_FIELD__VALUE_IS_MANDATORY": "Campo obbligatorio",
+  "CORE__FORM_FIELD__VALUE_IS_TOO_SHORT": "Valore troppo breve",
+  "CORE__FORM_FIELD__VALUE_IS_TOO_LONG": "Valore troppo lungo"
+}

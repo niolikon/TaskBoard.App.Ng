@@ -1,0 +1,12 @@
+<mat-sidenav-container>
+  <mat-sidenav #drawer mode="push">
+    <app-sidebar (linkClicked)="onSidebarLinkClicked()"></app-sidebar>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <app-topbar (menuToggle)="drawer.toggle()"></app-topbar>
+    <div tabindex="-1" #mainContent>
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

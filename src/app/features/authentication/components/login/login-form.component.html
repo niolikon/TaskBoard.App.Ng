@@ -1,0 +1,47 @@
+<mat-card>
+  <mat-error *ngIf="loginError" class="error-message" role="alert">
+    {{ loginError }}
+  </mat-error>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <h2>{{ 'AUTHENTICATION__LOGIN_FORM_COMPONENT__FORM_TITLE' | translate  }}</h2>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>{{ 'AUTHENTICATION__LOGIN_FORM_COMPONENT__FIELD_LABEL_USERNAME' | translate }}</mat-label>
+      <input matInput formControlName="username" />
+
+      @if (username.invalid && (username.dirty || username.touched)) {
+        <mat-error *ngIf="username.hasError('required')">
+          {{ 'CORE__FORM_FIELD__VALUE_IS_MANDATORY' | translate }}
+        </mat-error>
+        <mat-error *ngIf="username.hasError('minlength')">
+          {{ 'CORE__FORM_FIELD__VALUE_IS_TOO_SHORT' | translate }}
+        </mat-error>
+        <mat-error *ngIf="username.hasError('maxlength')">
+          {{ 'CORE__FORM_FIELD__VALUE_IS_TOO_LONG' | translate }}
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>{{ 'AUTHENTICATION__LOGIN_FORM_COMPONENT__FIELD_LABEL_PASSWORD' | translate }}</mat-label>
+      <input matInput type="password" formControlName="password" />
+
+      @if (password.invalid && (password.dirty || password.touched)) {
+        <mat-error *ngIf="password.hasError('required')">
+          {{ 'CORE__FORM_FIELD__VALUE_IS_MANDATORY' | translate }}
+        </mat-error>
+        <mat-error *ngIf="password.hasError('minlength')">
+          {{ 'CORE__FORM_FIELD__VALUE_IS_TOO_SHORT' | translate }}
+        </mat-error>
+        <mat-error *ngIf="password.hasError('maxlength')">
+          {{ 'CORE__FORM_FIELD__VALUE_IS_TOO_LONG' | translate }}
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="submitDisabled">
+      {{ 'AUTHENTICATION__LOGIN_FORM_COMPONENT__BUTTON_LABEL_SUBMIT' | translate }}
+    </button>
+  </form>
+</mat-card>

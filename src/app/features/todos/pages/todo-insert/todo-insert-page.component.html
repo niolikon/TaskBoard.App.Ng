@@ -1,0 +1,15 @@
+<div class="insert-dialog-wrapper">
+  <div class="dialog-header">
+    <h2 class="dialog-title">{{ 'TODOS__INSERT_PAGE__TITLE_LABEL' | translate }}</h2>
+    <button mat-icon-button (click)="closeDialog()" [attr.aria-label]=" 'TODOS__INSERT_PAGE__CLOSE_BUTTON_ARIA_LABEL' | translate">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="dialog-content">
+    <app-todo-edit
+      (todoSubmit)="insertTodo($event)"
+      [backendError]="backendError"
+    ></app-todo-edit>
+  </div>
+</div>

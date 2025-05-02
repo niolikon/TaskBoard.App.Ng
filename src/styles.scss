@@ -1,0 +1,21 @@
+/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+$success-snackbar: map.get(map.get(mat.$blue-palette, secondary), 50);
+
+:root {
+  @include mat.snack-bar-overrides((
+    container-color: $success-snackbar,
+    supporting-text-color: white
+  ));
+}
+
+html {
+  color-scheme: light dark;
+  @include mat.theme((
+    color: mat.$blue-palette,
+    typography: Roboto,
+    density: 0
+  ));
+}

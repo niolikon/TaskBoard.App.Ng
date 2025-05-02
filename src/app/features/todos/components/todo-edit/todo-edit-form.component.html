@@ -1,0 +1,37 @@
+<mat-card class="edit-card">
+  <mat-error *ngIf="backendError" class="error-message" role="alert">
+    {{ backendError }}
+  </mat-error>
+
+  <form [formGroup]="todoForm" (ngSubmit)="onSubmit()" class="form-content">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ 'TODOS__EDIT_FORM_COMPONENT__FIELD_LABEL_TITLE' | translate }}</mat-label>
+      <input matInput placeholder="{{ 'TODOS__EDIT_FORM_COMPONENT__FIELD_PLACEHOLDER_TITLE' | translate }}" formControlName="title" />
+      <mat-error *ngIf="title.hasError('required')">{{ 'CORE__FORM_FIELD__VALUE_IS_MANDATORY' | translate }}</mat-error>
+      <mat-error *ngIf="title.hasError('minlength')">{{ 'CORE__FORM_FIELD__VALUE_IS_TOO_SHORT' | translate }}</mat-error>
+      <mat-error *ngIf="title.hasError('maxlength')">{{ 'CORE__FORM_FIELD__VALUE_IS_TOO_LONG' | translate }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ 'TODOS__EDIT_FORM_COMPONENT__FIELD_LABEL_DESCRIPTION' | translate }}</mat-label>
+      <textarea matInput placeholder="{{ 'TODOS__EDIT_FORM_COMPONENT__FIELD_PLACEHOLDER_DESCRIPTION' | translate }}" formControlName="description" rows="4"></textarea>
+      <mat-error *ngIf="description.hasError('required')">{{ 'CORE__FORM_FIELD__VALUE_IS_MANDATORY' | translate }}</mat-error>
+      <mat-error *ngIf="description.hasError('minlength')">{{ 'CORE__FORM_FIELD__VALUE_IS_TOO_SHORT' | translate }}</mat-error>
+      <mat-error *ngIf="description.hasError('maxlength')">{{ 'CORE__FORM_FIELD__VALUE_IS_TOO_LONG' | translate }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ 'TODOS__EDIT_FORM_COMPONENT__FIELD_LABEL_DUEDATE' | translate }}</mat-label>
+      <input matInput [matDatepicker]="picker" placeholder="{{ 'TODOS__EDIT_FORM_COMPONENT__FIELD_PLACEHOLDER_DUEDATE' | translate }}" formControlName="dueDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="dueDate.hasError('required')">{{ 'CORE__FORM_FIELD__VALUE_IS_MANDATORY' | translate }}</mat-error>
+      <mat-error *ngIf="dueDate.hasError('dateInPast')">{{ 'SHARED__DATE_NOT_IN_PAST_VALIDATOR__DATE_IN_PAST' | translate }}</mat-error>
+    </mat-form-field>
+
+    <div class="button-row">
+      <button mat-stroked-button color="warn" type="button" (click)="onCancel()">{{ 'TODOS__EDIT_FORM_COMPONENT__BUTTON_LABEL_CANCEL' | translate }}</button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="submitDisabled">{{ 'TODOS__EDIT_FORM_COMPONENT__BUTTON_LABEL_SUBMIT' | translate }}</button>
+    </div>
+  </form>
+</mat-card>

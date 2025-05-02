@@ -1,0 +1,20 @@
+<div class="todos-container">
+  <app-todo-preview
+    *ngFor="let todo of todos$ | async"
+    [todo]="todo"
+    (edit)="openEditDialog($event)"
+    (complete)="openCompleteDialog($event)"
+    (delete)="openDeleteDialog($event)"
+  >
+  </app-todo-preview>
+</div>
+
+<button
+  mat-fab
+  class="fab"
+  color="primary"
+  [attr.aria-label]="'TODOS__PENDING_TODOS_PAGE__BUTTON_ARIA_LABEL' | translate"
+  (click)="openInsertDialog()"
+>
+  <mat-icon>assignment_add</mat-icon>
+</button>

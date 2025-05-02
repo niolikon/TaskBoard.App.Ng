@@ -1,0 +1,10 @@
+<a mat-list-item
+   class="sidebar-list-item"
+   tabindex="-1"
+
+   [routerLink]="route"
+   routerLinkActive="active-link"
+   (click)="clicked.emit()">
+  <mat-icon matListItemIcon>{{ icon }}</mat-icon>
+  <span matLine>{{ label }}</span>
+</a>

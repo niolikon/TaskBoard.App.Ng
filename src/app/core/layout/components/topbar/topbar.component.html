@@ -1,0 +1,21 @@
+<mat-toolbar color="primary">
+  <ng-container *ngIf="isTopbarActionsEnabled$ | async">
+    <button mat-icon-button (click)="menuToggle.emit()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </ng-container>
+  <span class="app-title">TaskBoard.App</span>
+  <span class="spacer"></span>
+  <ng-container *ngIf="isTopbarActionsEnabled$ | async">
+    <ng-container *ngFor="let action of navigationService.topbarActions$ | async">
+      <ng-container *ngIf="action.component; else simpleAction">
+        <ng-container *ngComponentOutlet="action.component"></ng-container>
+      </ng-container>
+      <ng-template #simpleAction>
+        <button mat-icon-button [routerLink]="action.route" [matTooltip]="action.tooltip">
+          <mat-icon>{{ action.icon }}</mat-icon>
+        </button>
+      </ng-template>
+    </ng-container>
+  </ng-container>
+</mat-toolbar>

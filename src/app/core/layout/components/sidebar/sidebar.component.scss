@@ -1,0 +1,9 @@
+::ng-deep .sidebar-list-item.active-link {
+  background-color: #1976d2;
+  color: white;
+
+  mat-icon,
+  span {
+    color: white;
+  }
+}
