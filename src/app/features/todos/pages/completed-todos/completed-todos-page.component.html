@@ -1,0 +1,10 @@
+<div class="todos-container">
+  <app-todo-preview
+    *ngFor="let todo of todos$ | async"
+    [todo]="todo"
+    (edit)="openEditDialog($event)"
+    (complete)="openCompleteDialog($event)"
+    (delete)="openDeleteDialog($event)"
+  >
+  </app-todo-preview>
+</div>

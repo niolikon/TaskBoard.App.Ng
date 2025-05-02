@@ -1,0 +1,47 @@
+<mat-card>
+  <mat-error *ngIf="loginError" class="error-message" role="alert">
+    {{ loginError }}
+  </mat-error>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <h2>Login</h2>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" />
+
+      @if (username.invalid && (username.dirty || username.touched)) {
+        <mat-error *ngIf="username.hasError('required')">
+          Il campo è obbligatorio
+        </mat-error>
+        <mat-error *ngIf="username.hasError('minlength')">
+          Minimo 4 caratteri
+        </mat-error>
+        <mat-error *ngIf="username.hasError('maxlength')">
+          Massimo 50 caratteri
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password" />
+
+      @if (password.invalid && (password.dirty || password.touched)) {
+        <mat-error *ngIf="password.hasError('required')">
+          Il campo è obbligatorio
+        </mat-error>
+        <mat-error *ngIf="password.hasError('minlength')">
+          Minimo 4 caratteri
+        </mat-error>
+        <mat-error *ngIf="password.hasError('maxlength')">
+          Massimo 50 caratteri
+        </mat-error>
+      }
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="submitDisabled">
+      Login
+    </button>
+  </form>
+</mat-card>

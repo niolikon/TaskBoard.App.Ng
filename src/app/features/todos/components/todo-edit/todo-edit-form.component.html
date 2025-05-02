@@ -1,0 +1,37 @@
+<mat-card class="edit-card">
+  <mat-error *ngIf="backendError" class="error-message" role="alert">
+    {{ backendError }}
+  </mat-error>
+
+  <form [formGroup]="todoForm" (ngSubmit)="onSubmit()" class="form-content">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Titolo</mat-label>
+      <input matInput placeholder="Titolo" formControlName="title" />
+      <mat-error *ngIf="title.hasError('required')">Il campo è obbligatorio</mat-error>
+      <mat-error *ngIf="title.hasError('minlength')">Minimo 3 caratteri</mat-error>
+      <mat-error *ngIf="title.hasError('maxlength')">Massimo 50 caratteri</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Descrizione</mat-label>
+      <textarea matInput placeholder="Descrizione" formControlName="description" rows="4"></textarea>
+      <mat-error *ngIf="description.hasError('required')">Il campo è obbligatorio</mat-error>
+      <mat-error *ngIf="description.hasError('minlength')">Minimo 4 caratteri</mat-error>
+      <mat-error *ngIf="description.hasError('maxlength')">Massimo 250 caratteri</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Data di completamento</mat-label>
+      <input matInput [matDatepicker]="picker" placeholder="Seleziona una data" formControlName="dueDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="dueDate.hasError('required')">Il campo è obbligatorio</mat-error>
+      <mat-error *ngIf="dueDate.hasError('dateInPast')">La data deve essere futura</mat-error>
+    </mat-form-field>
+
+    <div class="button-row">
+      <button mat-stroked-button color="warn" type="button" (click)="onCancel()">Annulla</button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="submitDisabled">Salva</button>
+    </div>
+  </form>
+</mat-card>

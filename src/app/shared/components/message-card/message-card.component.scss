@@ -1,0 +1,19 @@
+.message-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.message-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem;
+
+  @media (max-width: 600px) {
+    max-width: 100%;
+    height: auto;
+  }
+}

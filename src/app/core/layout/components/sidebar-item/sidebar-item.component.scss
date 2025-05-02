@@ -1,0 +1,26 @@
+::ng-deep .sidebar-list-item {
+  display: flex;
+  align-items: center;
+
+  mat-icon {
+    margin-right: 12px;
+    align-self: center;
+  }
+
+  span {
+    line-height: 1.2;
+  }
+}
+
+a.mat-list-item.active-link {
+  background-color: #1976d2 !important;
+  color: white !important;
+
+  mat-icon {
+    color: white !important;
+  }
+
+  span {
+    color: white !important;
+  }
+}

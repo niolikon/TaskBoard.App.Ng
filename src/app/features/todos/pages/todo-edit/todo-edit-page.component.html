@@ -1,0 +1,17 @@
+<div class="insert-dialog-wrapper">
+  <div class="dialog-header">
+    <h2 class="dialog-title">Modifica ToDo</h2>
+    <button mat-icon-button (click)="closeDialog()" aria-label="Chiudi">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="dialog-content">
+    <app-todo-edit
+      [todo]="todo"
+      (todoSubmit)="updateTodo($event)"
+      [backendError]="backendError"
+    >
+    </app-todo-edit>
+  </div>
+</div>

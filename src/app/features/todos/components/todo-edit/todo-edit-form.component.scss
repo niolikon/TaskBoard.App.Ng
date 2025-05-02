@@ -1,0 +1,29 @@
+.edit-card {
+  max-width: 600px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+mat-error.error-message {
+  margin-bottom: 1rem;
+  color: #f44336;
+  font-weight: bold;
+}

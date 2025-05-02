@@ -1,0 +1,1 @@
+export const AUTHENTICATION_MODULE_ROUTE_PATH = 'auth';
