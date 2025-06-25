@@ -11,8 +11,14 @@ describe('AuthenticationStateService', () => {
   let apiMock: jasmine.SpyObj<AuthenticationApiService>;
   let storageMock: jasmine.SpyObj<TokenStorageService>;
 
+  const dummyAccessToken = [
+    btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' })),
+    btoa(JSON.stringify({ exp: Math.floor(Date.now() / 1000) + 3600 })),
+    'signature'
+  ].join('.');
+
   const dummyToken: UserTokenDto = {
-    AccessToken: 'abc123',
+    AccessToken: dummyAccessToken,
     RefreshToken: 'xyz789'
   };
 

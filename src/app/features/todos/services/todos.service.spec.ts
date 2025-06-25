@@ -152,7 +152,7 @@ describe('TodosService', () => {
 
       // Act
       service.delete(todo).subscribe(result => {
-        expect(result).toBeUndefined(); // void response
+        expect(result).toBeNull(); // void response
       });
 
       // Assert

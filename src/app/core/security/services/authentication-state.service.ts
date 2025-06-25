@@ -47,7 +47,6 @@ export class AuthenticationStateService {
   }
 
   refreshToken(): Observable<boolean>  {
-    console.log("refreshToken called");
     return new Observable<boolean>((observer) => {
       const currentToken = this.tokenStorageService.getToken();
 

@@ -1,11 +1,14 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { LoginSuccessPageComponent } from './login-success-page.component';
 import { Router } from '@angular/router';
-import { Component } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { of } from 'rxjs';
 
-@Component({ selector: 'app-message-card', template: '' })
-class MockMessageCardComponent {}
+class FakeLoader {
+  getTranslation(lang: string) {
+    return of({});
+  }
+}
 
 describe('LoginSuccessPageComponent', () => {
   let component: LoginSuccessPageComponent;
@@ -16,10 +19,11 @@ describe('LoginSuccessPageComponent', () => {
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      declarations: [
+      imports: [
         LoginSuccessPageComponent,
-        MockMessageCardComponent,
-        TranslatePipe
+        TranslateModule.forRoot({
+          loader: { provide: TranslateLoader, useClass: FakeLoader }
+        })
       ],
       providers: [
         { provide: Router, useValue: routerSpy }
@@ -28,19 +32,15 @@ describe('LoginSuccessPageComponent', () => {
 
     fixture = TestBed.createComponent(LoginSuccessPageComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should navigate to root after 2 seconds', fakeAsync(() => {
-    // Act
+  it('should navigate to home after 2 seconds', fakeAsync(() => {
     component.ngOnInit();
     tick(2000);
-
-    // Assert
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/']);
   }));
 });

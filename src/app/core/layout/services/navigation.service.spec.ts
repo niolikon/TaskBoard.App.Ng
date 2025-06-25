@@ -34,7 +34,7 @@ describe('NavigationService', () => {
         {
           component: DummySidebarComponent,
           order: 2,
-          inputs: { label: 'Settings', route: '/settings', icon: 'settings' } // duplicate
+          inputs: { label: 'Settings', route: '/settings', icon: 'settings' }
         }
       ];
 
@@ -45,7 +45,7 @@ describe('NavigationService', () => {
       // Assert
       service.sidebarComponentItems$.subscribe(result => {
         expect(result.length).toBe(2);
-        expect(result[0].inputs?.['label']).toBe('Home');     // Sorted
+        expect(result[0].inputs?.['label']).toBe('Home');
         expect(result[1].inputs?.['label']).toBe('Settings');
         done();
       });
@@ -61,7 +61,7 @@ describe('NavigationService', () => {
 
       // Act
       service.registerSidebarComponents([item]);
-      service.registerSidebarComponents([item]); // duplicate
+      service.registerSidebarComponents([item]); // intentional duplicate
 
       // Assert
       service.sidebarComponentItems$.subscribe(result => {
