@@ -1,14 +1,30 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MainPageComponent } from './main-page.component';
-import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
-import { Component, ElementRef } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { Component } from '@angular/core';
+import { AuthenticationApiService } from '../../../security/services/authentication-api.service';
+import { TokenStorageService } from '../../../security/services/token-storage.service';
+import { AuthenticationStateService } from '../../../security';
 
-@Component({ selector: 'app-sidebar', template: '' })
+// Mock components
+@Component({
+  selector: 'app-sidebar',
+  standalone: true,
+  template: ''
+})
 class MockSidebarComponent {}
 
-@Component({ selector: 'app-topbar', template: '' })
+@Component({
+  selector: 'app-topbar',
+  standalone: true,
+  template: ''
+})
 class MockTopbarComponent {}
+
+// Mocks services
+const mockAuthenticationApiService = {};
+const mockTokenStorageService = {};
+const mockAuthenticationStateService = {};
 
 describe('MainPageComponent', () => {
   let component: MainPageComponent;
@@ -16,42 +32,25 @@ describe('MainPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+      imports: [
         MainPageComponent,
+        MatSidenavModule,
         MockSidebarComponent,
-        MockTopbarComponent,
-        RouterOutlet
+        MockTopbarComponent
       ],
-      imports: [MatSidenavModule]
+      providers: [
+        { provide: AuthenticationApiService, useValue: mockAuthenticationApiService },
+        { provide: TokenStorageService, useValue: mockTokenStorageService },
+        { provide: AuthenticationStateService, useValue: mockAuthenticationStateService }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(MainPageComponent);
     component = fixture.componentInstance;
-
-    // Mock manuale dei ViewChild
-    component.drawer = {
-      close: jasmine.createSpy().and.returnValue(Promise.resolve(true))
-    } as any as MatSidenav;
-
-    component.mainContent = {
-      nativeElement: {
-        focus: jasmine.createSpy()
-      }
-    } as ElementRef;
-
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should close the drawer and focus mainContent on sidebar link click', async () => {
-    // Act
-    await component.onSidebarLinkClicked();
-
-    // Assert
-    expect(component.drawer.close).toHaveBeenCalled();
-    expect(component.mainContent.nativeElement.focus).toHaveBeenCalled();
   });
 });

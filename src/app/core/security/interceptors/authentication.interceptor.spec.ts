@@ -22,47 +22,58 @@ describe('authenticationInterceptor', () => {
   });
 
   it('should add Authorization header if token exists', () => {
-    tokenStorageServiceSpy.getToken.and.returnValue({ AccessToken: 'mock-token', RefreshToken: 'mock-refresh-token' });
+    tokenStorageServiceSpy.getToken.and.returnValue({
+      AccessToken: 'mock-token',
+      RefreshToken: 'mock-refresh-token'
+    });
 
     const request = new HttpRequest('GET', '/api/Todos');
-    const handler: HttpHandlerFn = (req: HttpRequest<any>) => {
+    const handler: HttpHandlerFn = (req) => {
       expect(req.headers.get('Authorization')).toBe('Bearer mock-token');
       return of(new HttpResponse({ status: 200 }));
     };
 
-    authenticationInterceptor(request, handler).subscribe();
+    TestBed.runInInjectionContext(() => {
+      authenticationInterceptor(request, handler).subscribe();
+    });
   });
 
   it('should NOT add Authorization header if token is null', () => {
     tokenStorageServiceSpy.getToken.and.returnValue(null);
 
     const request = new HttpRequest('GET', '/api/Todos');
-    const handler: HttpHandlerFn = (req: HttpRequest<any>) => {
+    const handler: HttpHandlerFn = (req) => {
       expect(req.headers.has('Authorization')).toBe(false);
       return of(new HttpResponse({ status: 200 }));
     };
 
-    authenticationInterceptor(request, handler).subscribe();
+    TestBed.runInInjectionContext(() => {
+      authenticationInterceptor(request, handler).subscribe();
+    });
   });
 
   it('should call logout() on 401 response', () => {
-    tokenStorageServiceSpy.getToken.and.returnValue({ AccessToken: 'mock-token', RefreshToken: 'mock-refresh-token' });
+    tokenStorageServiceSpy.getToken.and.returnValue({
+      AccessToken: 'mock-token',
+      RefreshToken: 'mock-refresh-token'
+    });
 
     const request = new HttpRequest('GET', '/api/Todos');
-    const handler: HttpHandlerFn = () => {
-      return throwError(() =>
+    const handler: HttpHandlerFn = () =>
+      throwError(() =>
         new HttpErrorResponse({
           status: 401,
           statusText: 'Unauthorized',
           url: '/api/Todos'
         })
       );
-    };
 
-    authenticationInterceptor(request, handler).subscribe({
-      error: () => {
-        expect(authenticationStateSpy.logout).toHaveBeenCalled();
-      }
+    TestBed.runInInjectionContext(() => {
+      authenticationInterceptor(request, handler).subscribe({
+        error: () => {
+          expect(authenticationStateSpy.logout).toHaveBeenCalled();
+        }
+      });
     });
   });
 });
