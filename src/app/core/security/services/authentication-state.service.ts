@@ -62,7 +62,7 @@ export class AuthenticationStateService {
           error: (error) => {
             console.error('RefreshToken failed', error);
             this.tokenStorageService.clearToken();
-            this.cancelRefreshToken();
+            this.cancelRefreshTokenTimeout();
             this.authState.next(false);
             observer.next(false);
             observer.complete();
@@ -84,7 +84,7 @@ export class AuthenticationStateService {
         this.authenticationApiService.logout(currentToken).subscribe({
           next: () => {
             this.tokenStorageService.clearToken();
-            this.cancelRefreshToken();
+            this.cancelRefreshTokenTimeout();
             this.authState.next(false);
             observer.next(true);
             observer.complete();
@@ -92,7 +92,7 @@ export class AuthenticationStateService {
           error: (error) => {
             console.error('Logout failed', error);
             this.tokenStorageService.clearToken();
-            this.cancelRefreshToken();
+            this.cancelRefreshTokenTimeout();
             this.authState.next(false);
             observer.next(true);
             observer.complete();
@@ -100,7 +100,7 @@ export class AuthenticationStateService {
         });
       } else {
         this.tokenStorageService.clearToken();
-        this.cancelRefreshToken();
+        this.cancelRefreshTokenTimeout();
         this.authState.next(false);
         observer.next(true);
         observer.complete();
@@ -114,7 +114,7 @@ export class AuthenticationStateService {
   }
 
   private scheduleRefreshToken(accessToken: string): void {
-    this.cancelRefreshToken();
+    this.cancelRefreshTokenTimeout();
 
     const expTime = this.decodeExpiration(accessToken);
     const now = Date.now();
@@ -129,7 +129,7 @@ export class AuthenticationStateService {
     }, delay);
   }
 
-  private cancelRefreshToken(): void {
+  private cancelRefreshTokenTimeout(): void {
     if (this.refreshTimeout) {
       clearTimeout(this.refreshTimeout);
     }

@@ -7,6 +7,9 @@
   "AUTHENTICATION__LOGOUT_BUTTON_COMPONENT__CONFIRMATION_DIALOG_TITLE": "Logout",
   "AUTHENTICATION__LOGOUT_BUTTON_COMPONENT__CONFIRMATION_DIALOG_MESSAGE": "Sei sicuro di voler uscire?",
 
+  "AUTHENTICATION__LOGIN_PAGE__CREDENTIALS_INVALID": "Username o password non validi",
+  "AUTHENTICATION__LOGIN_PAGE__ERROR_ON_LOGIN": "Si è verificato un errore durante il login",
+
   "AUTHENTICATION__LOGIN_SUCCESS_PAGE__MESSAGE": "Login eseguito con successo.",
 
   "AUTHENTICATION__LOGOUT_SUCCESS_PAGE__MESSAGE": "Logout eseguito. Verrai reindirizzato alla home."

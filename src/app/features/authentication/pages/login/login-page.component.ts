@@ -2,6 +2,7 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
 import { LoginFormComponent } from '../../components/login/login-form.component';
 import { AuthenticationStateService, UserCredentials } from '../../../../core/security';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login-page',
@@ -18,7 +19,8 @@ export class LoginPageComponent {
     private readonly authService: AuthenticationStateService,
     private readonly cdr: ChangeDetectorRef,
     private readonly router: Router,
-    private readonly activatedRoute: ActivatedRoute) {
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly translate: TranslateService) {
     this.loginError = null;
   }
 
@@ -27,18 +29,26 @@ export class LoginPageComponent {
       next: (success: boolean) => {
         if (success) {
           this.loginError = null;
-          this.router.navigate(['../success'], { relativeTo: this.activatedRoute });
+          this.router.navigate(['../success'], { relativeTo: this.activatedRoute }).then(_ => {});
         } else {
-          this.loginError = 'Credenziali non valide';
-          this.cdr.detectChanges();
+          this.translate.get('AUTHENTICATION__LOGIN_PAGE__CREDENTIALS_INVALID').subscribe(msg => {
+            this.forceLoginErrorRefresh(msg);
+          });
         }
       },
       error: err => {
-        this.loginError = 'Errore durante il login';;
-        this.cdr.detectChanges();
+        this.translate.get('AUTHENTICATION__LOGIN_PAGE__ERROR_ON_LOGIN').subscribe(msg => {
+          this.forceLoginErrorRefresh(msg);
+        });
         console.error(err);
       }
     });
   }
 
+  forceLoginErrorRefresh(message: string) {
+    this.loginError = null;
+    this.cdr.detectChanges();
+    this.loginError = message;
+    this.cdr.detectChanges();
+  }
 }
