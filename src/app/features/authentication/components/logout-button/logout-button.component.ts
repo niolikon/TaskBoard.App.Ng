@@ -44,7 +44,7 @@ export class LogoutButtonComponent {
             this.authenticationStateService.logout()
               .subscribe({
                 next: () => {
-                  this.router.navigate([AUTHENTICATION_MODULE_ROUTE_PATH + '/logout']);
+                  this.router.navigate([AUTHENTICATION_MODULE_ROUTE_PATH + '/logout']).then(_ => {});;
                 },
                 error: err => {
                   // TODO: find a way to handle this

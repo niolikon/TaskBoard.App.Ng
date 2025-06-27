@@ -27,14 +27,14 @@ export class LoginPageComponent {
       next: (success: boolean) => {
         if (success) {
           this.loginError = null;
-          this.router.navigate(['../success'], { relativeTo: this.activatedRoute });
+          this.router.navigate(['../success'], { relativeTo: this.activatedRoute }).then(_ => {});
         } else {
           this.loginError = 'Credenziali non valide';
           this.cdr.detectChanges();
         }
       },
       error: err => {
-        this.loginError = 'Errore durante il login';;
+        this.loginError = 'Errore durante il login';
         this.cdr.detectChanges();
         console.error(err);
       }

@@ -17,6 +17,6 @@ export class LoginSuccessPageComponent implements OnInit {
   constructor(private readonly router: Router) {}
 
   ngOnInit(): void {
-    setTimeout( () => {this.router.navigate(['/']);}, 2000)
+    setTimeout( () => { this.router.navigate(['/']).then(_ => {}); }, 2000)
   }
 }

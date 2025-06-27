@@ -13,10 +13,11 @@ class FakeLoader {
 describe('LoginSuccessPageComponent', () => {
   let component: LoginSuccessPageComponent;
   let fixture: ComponentFixture<LoginSuccessPageComponent>;
-  let routerSpy: jasmine.SpyObj<Router>;
+  let mockRouter: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
-    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
+    mockRouter.navigate.and.returnValue(Promise.resolve(true));
 
     await TestBed.configureTestingModule({
       imports: [
@@ -26,7 +27,7 @@ describe('LoginSuccessPageComponent', () => {
         })
       ],
       providers: [
-        { provide: Router, useValue: routerSpy }
+        { provide: Router, useValue: mockRouter }
       ]
     }).compileComponents();
 
@@ -41,6 +42,6 @@ describe('LoginSuccessPageComponent', () => {
   it('should navigate to home after 2 seconds', fakeAsync(() => {
     component.ngOnInit();
     tick(2000);
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/']);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
   }));
 });
