@@ -1,10 +1,10 @@
 <mat-card class="todo-card">
-  <mat-card-title (click)="onEditClick()">
+  <mat-card-title>
     <div class="todo-title">
       {{ todo.title }}
     </div>
   </mat-card-title>
-  <mat-card-content (click)="onEditClick()">
+  <mat-card-content>
     <div class="todo-title">
     {{ todo.description }}
     </div>
@@ -14,11 +14,14 @@
     </div>
   </mat-card-content>
   <mat-card-actions align="end" class="actions">
-    <button mat-button color="warn" matTooltip="{{ 'TODOS__PREVIEW_COMPONENT__BUTTON_TOOLTIP_DELETE' | translate }}" class="action-button" (click)="onDeleteClick()">
-      <mat-icon>delete</mat-icon>
+    <button [disabled]="todo.isCompleted" mat-button color="primary" matTooltip="{{ 'TODOS__PREVIEW_COMPONENT__BUTTON_TOOLTIP_EDIT' | translate }}"  class="action-button" (click)="onEditClick()">
+      <mat-icon>assignment</mat-icon>
     </button>
     <button [disabled]="todo.isCompleted" mat-button color="primary" matTooltip="{{ 'TODOS__PREVIEW_COMPONENT__BUTTON_TOOLTIP_COMPLETE' | translate }}" class="action-button" (click)="onCompleteClick()">
       <mat-icon>assignment_turned_in</mat-icon>
+    </button>
+    <button mat-button color="warn" matTooltip="{{ 'TODOS__PREVIEW_COMPONENT__BUTTON_TOOLTIP_DELETE' | translate }}" class="action-button" (click)="onDeleteClick()">
+      <mat-icon>delete</mat-icon>
     </button>
   </mat-card-actions>
 </mat-card>
