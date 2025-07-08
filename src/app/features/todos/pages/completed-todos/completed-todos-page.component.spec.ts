@@ -6,6 +6,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { CompletedTodosPageComponent } from './completed-todos-page.component';
 import { TodosService } from '../../services/todos.service';
 import { Todo } from '../../models/todo';
+import { PageResponse } from '../../../../shared/dtos/page-response.dto';
 import { of } from 'rxjs';
 
 describe('CompletedTodosPageComponent', () => {
@@ -45,16 +46,18 @@ describe('CompletedTodosPageComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should fetch and set completed todos', () => {
-      todosServiceSpy.readAllCompleted.and.returnValue(of([dummyTodo]));
+    it('should fetch and set completed todos', (done) => {
+      const pageResponse: PageResponse<Todo> = PageResponse.of([dummyTodo]);
+      todosServiceSpy.readAllCompleted.and.returnValue(of(pageResponse));
 
       component.ngOnInit();
 
       component.todos$.subscribe(todos => {
-        expect(todos).toEqual([dummyTodo]);
+        expect(todos).toEqual(pageResponse);
+        done();
       });
 
-      expect(todosServiceSpy.readAllCompleted).toHaveBeenCalled();
+      expect(todosServiceSpy.readAllCompleted).toHaveBeenCalledWith({});
     });
   });
 });

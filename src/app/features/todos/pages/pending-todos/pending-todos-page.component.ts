@@ -8,11 +8,15 @@ import { TodoInsertPageComponent} from '../todo-insert/todo-insert-page.componen
 import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { AsyncPipe, NgForOf } from '@angular/common';
-import { BehaviorSubject } from 'rxjs';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AsyncPipe, CommonModule, NgForOf } from '@angular/common';
+import { BehaviorSubject, finalize } from 'rxjs';
 import { SuccessSnackbarComponent } from '../../../../shared/components/success-snackbar/success-snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslatePipe } from '@ngx-translate/core';
+import { PageResponse } from '../../../../shared/dtos/page-response.dto';
+import { PageableQuery } from '../../../../shared/interfaces/pageable-query.interface';
 
 @Component({
   selector: 'app-pending-todos-page',
@@ -21,6 +25,9 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    CommonModule,
     NgForOf,
     AsyncPipe,
     TranslatePipe
@@ -29,8 +36,11 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrl: './pending-todos-page.component.scss'
 })
 export class PendingTodosPageComponent implements OnInit {
-  private readonly todosSubject = new BehaviorSubject<Todo[]>([]);
+  private readonly todosSubject = new BehaviorSubject<PageResponse<Todo>>(PageResponse.empty<Todo>());
   todos$ = this.todosSubject.asObservable();
+  private latestQuery: PageableQuery = {};
+  isLoading: boolean = true;
+  isError: boolean = false;
 
   constructor(
     private readonly todoService: TodosService,
@@ -39,7 +49,7 @@ export class PendingTodosPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.todoService.readAllPending().subscribe(todos => this.todosSubject.next(todos));
+    this.reloadPage();
   }
 
   openInsertDialog() {
@@ -50,7 +60,7 @@ export class PendingTodosPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result?.inserted) {
-        this.todosSubject.next([...this.todosSubject.getValue(), result.todo]);
+        this.reloadPage();
 
         this.snackBar.openFromComponent(SuccessSnackbarComponent, {
           duration: 2000,
@@ -70,11 +80,7 @@ export class PendingTodosPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result?.updated) {
-        const current = this.todosSubject.getValue();
-        const index = current.findIndex(t => t.id === result.todo.id);
-        const updated = [...current];
-        updated[index] = result.todo;
-        this.todosSubject.next(updated);
+        this.reloadPage();
 
         this.snackBar.openFromComponent(SuccessSnackbarComponent, {
           duration: 2000,
@@ -85,12 +91,6 @@ export class PendingTodosPageComponent implements OnInit {
     });
   }
 
-  private removeTodo(todo: Todo) {
-    const current = this.todosSubject.getValue();
-    const filtered = current.filter(t => t.id !== todo.id);
-    this.todosSubject.next(filtered);
-  }
-
   openCompleteDialog($event: Todo) {
     this.dialog.open(ConfirmationDialogComponent, {
       data: { title: 'Completare il todo', message: 'Vuoi davvero segnare come completato questo todo?' }
@@ -98,7 +98,7 @@ export class PendingTodosPageComponent implements OnInit {
       if (result === true) {
         this.todoService.markCompleted($event)
           .subscribe({
-            next: () => this.removeTodo($event),
+            next: () => this.reloadPage(),
             error: err => {
               // TODO: find a way to handle this
             }
@@ -114,12 +114,30 @@ export class PendingTodosPageComponent implements OnInit {
       if (result === true) {
         this.todoService.delete($event)
           .subscribe({
-            next: () => this.removeTodo($event),
+            next: () => this.reloadPage(),
             error: err => {
               // TODO: find a way to handle this
             }
           });
       }
     });
+  }
+
+  handlePageEvent(event: PageEvent) {
+    this.latestQuery = {
+      page: event.pageIndex,
+      size: event.pageSize
+    };
+
+    this.reloadPage();
+  }
+
+  reloadPage() {
+    this.isLoading = true;
+    this.isError = false;
+
+    this.todoService.readAllPending(this.latestQuery)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe(todos => this.todosSubject.next(todos));
   }
 }

@@ -1,10 +1,41 @@
 <div class="todos-container">
-  <app-todo-preview
-    *ngFor="let todo of todos$ | async"
-    [todo]="todo"
-    (edit)="openEditDialog($event)"
-    (complete)="openCompleteDialog($event)"
-    (delete)="openDeleteDialog($event)"
-  >
-  </app-todo-preview>
+
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="48"></mat-spinner>
+  </div>
+
+  <div class="error-container" *ngIf="isError">
+    <p class="error-text">Errore durante il caricamento dei dati. Riprova più tardi.</p>
+    <button mat-raised-button color="warn" (click)="reloadPage()">Riprova</button>
+  </div>
+
+  <ng-container *ngIf="todos$ | async as page">
+    <div *ngIf="!page.empty; else noResults">
+
+      <div class="todos-grid">
+        <app-todo-preview
+          *ngFor="let todo of page.content"
+          [todo]="todo"
+          (edit)="openEditDialog($event)"
+          (complete)="openCompleteDialog($event)"
+          (delete)="openDeleteDialog($event)"
+        >
+        </app-todo-preview>
+      </div>
+
+      <div class="paginator-container">
+        <mat-paginator (page)="handlePageEvent($event)"
+                       [length]="page.elementsTotal"
+                       [pageSize]="page.pageSize"
+                       [pageSizeOptions]="[5, 10, 25, 100]"
+                       aria-label="Select page">
+        </mat-paginator>
+      </div>
+    </div>
+
+    <ng-template #noResults>
+      <p>Nessun risultato disponibile.</p>
+    </ng-template>
+  </ng-container>
+
 </div>
