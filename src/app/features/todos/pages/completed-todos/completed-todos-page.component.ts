@@ -16,6 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { PageResponse } from '../../../../shared/dtos/page-response.dto';
 import { PageableQuery } from '../../../../shared/interfaces/pageable-query.interface';
+import {ErrorSnackbarComponent} from '../../../../shared/components/error-snackbar/error-snackbar.component';
 
 @Component({
   selector: 'app-completed-todos-page',
@@ -90,8 +91,16 @@ export class CompletedTodosPageComponent implements OnInit {
           this.todoService.markCompleted($event)
             .subscribe({
               next: () => this.reloadPage(),
-              error: err => {
-                // TODO: find a way to handle this
+              error: _ => {
+                this.translate.get('TODOS__ERROR_SNACKBAR__COMPLETE_ERROR_MESSAGE').subscribe(
+                  msg => {
+                    this.snackBar.openFromComponent(ErrorSnackbarComponent, {
+                      duration: 2000,
+                      data: { message: msg },
+                      panelClass: ['wa']
+                    });
+                  }
+                );
               }
             });
         }
@@ -114,8 +123,16 @@ export class CompletedTodosPageComponent implements OnInit {
           this.todoService.delete(todo)
             .subscribe({
               next: () => this.reloadPage(),
-              error: err => {
-                // TODO: find a way to handle this
+              error: _ => {
+                this.translate.get('TODOS__ERROR_SNACKBAR__DELETE_ERROR_MESSAGE').subscribe(
+                  msg => {
+                    this.snackBar.openFromComponent(ErrorSnackbarComponent, {
+                      duration: 2000,
+                      data: { message: msg },
+                      panelClass: ['wa']
+                    });
+                  }
+                );
               }
             });
         }

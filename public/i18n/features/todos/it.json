@@ -22,9 +22,11 @@
 
   "TODOS__CONFIRMATION_DIALOG__COMPLETE_TODO_TITLE": "Conferma completamento",
   "TODOS__CONFIRMATION_DIALOG__COMPLETE_TODO_MESSAGE": "Sei sicuro di voler segnare questo task come completato?",
+  "TODOS__ERROR_SNACKBAR__COMPLETE_ERROR_MESSAGE": "Non è stato possibile segnare il task come completato.",
 
   "TODOS__CONFIRMATION_DIALOG__DELETE_TODO_TITLE": "Conferma eliminazione",
   "TODOS__CONFIRMATION_DIALOG__DELETE_TODO_MESSAGE": "Sei sicuro di voler eliminare questo task?",
+  "TODOS__ERROR_SNACKBAR__DELETE_ERROR_MESSAGE": "Non è stato possibile eliminare il task.",
 
   "TODOS__EDIT_PAGE__TITLE_LABEL": "Modifica task",
   "TODOS__EDIT_PAGE__CLOSE_BUTTON_ARIA_LABEL": "Chiudi",
