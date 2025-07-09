@@ -13,6 +13,7 @@ import { AsyncPipe, CommonModule, NgForOf } from '@angular/common';
 import { BehaviorSubject, finalize } from 'rxjs';
 import { SuccessSnackbarComponent } from '../../../../shared/components/success-snackbar/success-snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 import { PageResponse } from '../../../../shared/dtos/page-response.dto';
 import { PageableQuery } from '../../../../shared/interfaces/pageable-query.interface';
 
@@ -42,7 +43,8 @@ export class CompletedTodosPageComponent implements OnInit {
   constructor(
     private readonly todoService: TodosService,
     private readonly dialog: MatDialog,
-    private readonly snackBar: MatSnackBar) {
+    private readonly snackBar: MatSnackBar,
+    private readonly translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -60,44 +62,64 @@ export class CompletedTodosPageComponent implements OnInit {
       if (result?.updated) {
         this.reloadPage();
 
-        this.snackBar.openFromComponent(SuccessSnackbarComponent, {
-          duration: 2000,
-          data: { message: 'Todo aggiornato con successo!' },
-          panelClass: ['wa']
-        });
+        this.translate.get('TODOS__SUCCESS_SNACKBAR__UPDATE_SUCCESS_MESSAGE').subscribe(
+          msg => {
+            this.snackBar.openFromComponent(SuccessSnackbarComponent, {
+              duration: 2000,
+              data: { message: msg },
+              panelClass: ['wa']
+            });
+          }
+        );
       }
     });
   }
 
   openCompleteDialog($event: Todo) {
-    this.dialog.open(ConfirmationDialogComponent, {
-      data: { title: 'Completare il todo', message: 'Vuoi davvero segnare come completato questo todo?' }
-    }).afterClosed().subscribe(result => {
-      if (result === true) {
-        this.todoService.markCompleted($event)
-          .subscribe({
-            next: () => this.reloadPage(),
-            error: err => {
-              // TODO: find a way to handle this
-            }
-          });
-      }
+    this.translate.get([
+      'TODOS__CONFIRMATION_DIALOG__COMPLETE_TODO_TITLE',
+      'TODOS__CONFIRMATION_DIALOG__COMPLETE_TODO_MESSAGE'
+    ]).subscribe(translations => {
+      this.dialog.open(ConfirmationDialogComponent, {
+        data: {
+          title: translations['TODOS__CONFIRMATION_DIALOG__COMPLETE_TODO_TITLE'],
+          message: translations['TODOS__CONFIRMATION_DIALOG__COMPLETE_TODO_MESSAGE']
+        }
+      }).afterClosed().subscribe(result => {
+        if (result === true) {
+          this.todoService.markCompleted($event)
+            .subscribe({
+              next: () => this.reloadPage(),
+              error: err => {
+                // TODO: find a way to handle this
+              }
+            });
+        }
+      });
     });
   }
 
-  openDeleteDialog($event: Todo) {
-    this.dialog.open(ConfirmationDialogComponent, {
-      data: { title: 'Eliminare il todo', message: 'Vuoi davvero elimanre questo todo?' }
-    }).afterClosed().subscribe(result => {
-      if (result === true) {
-        this.todoService.delete($event)
-          .subscribe({
-            next: () => this.reloadPage(),
-            error: err => {
-              // TODO: find a way to handle this
-            }
-          });
-      }
+  openDeleteDialog(todo: Todo) {
+    this.translate.get([
+      'TODOS__CONFIRMATION_DIALOG__DELETE_TODO_TITLE',
+      'TODOS__CONFIRMATION_DIALOG__DELETE_TODO_MESSAGE'
+    ]).subscribe(translations => {
+      this.dialog.open(ConfirmationDialogComponent, {
+        data: {
+          title: translations['TODOS__CONFIRMATION_DIALOG__DELETE_TODO_TITLE'],
+          message: translations['TODOS__CONFIRMATION_DIALOG__DELETE_TODO_MESSAGE']
+        }
+      }).afterClosed().subscribe(result => {
+        if (result === true) {
+          this.todoService.delete(todo)
+            .subscribe({
+              next: () => this.reloadPage(),
+              error: err => {
+                // TODO: find a way to handle this
+              }
+            });
+        }
+      });
     });
   }
 
