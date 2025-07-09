@@ -22,7 +22,9 @@ export class ConfirmationDialogComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
-    this.cancelButton.nativeElement.focus();
+    if (this.cancelButton?.nativeElement) {
+      this.cancelButton?.nativeElement.focus();
+    }
   }
 
   onConfirm(): void {

@@ -7,36 +7,49 @@ import { TodoEditPageComponent } from '../todo-edit/todo-edit-page.component';
 import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { AsyncPipe, NgForOf } from '@angular/common';
-import { BehaviorSubject } from 'rxjs';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AsyncPipe, CommonModule, NgForOf } from '@angular/common';
+import { BehaviorSubject, finalize } from 'rxjs';
 import { SuccessSnackbarComponent } from '../../../../shared/components/success-snackbar/success-snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
+import { PageResponse } from '../../../../shared/dtos/page-response.dto';
+import { PageableQuery } from '../../../../shared/interfaces/pageable-query.interface';
+import {ErrorSnackbarComponent} from '../../../../shared/components/error-snackbar/error-snackbar.component';
 
 @Component({
   selector: 'app-completed-todos-page',
   imports: [
+    TodoPreviewComponent,
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    CommonModule,
     NgForOf,
-    AsyncPipe,
-    TodoPreviewComponent
+    AsyncPipe
   ],
   templateUrl: './completed-todos-page.component.html',
   styleUrl: './completed-todos-page.component.scss'
 })
 export class CompletedTodosPageComponent implements OnInit {
-  private readonly todosSubject = new BehaviorSubject<Todo[]>([]);
+  private readonly todosSubject = new BehaviorSubject<PageResponse<Todo>>(PageResponse.empty<Todo>());
   todos$ = this.todosSubject.asObservable();
+  private latestQuery: PageableQuery = {};
+  isLoading: boolean = true;
+  isError: boolean = false;
 
   constructor(
     private readonly todoService: TodosService,
     private readonly dialog: MatDialog,
-    private readonly snackBar: MatSnackBar) {
+    private readonly snackBar: MatSnackBar,
+    private readonly translate: TranslateService) {
   }
 
   ngOnInit() {
-    this.todoService.readAllCompleted().subscribe(todos => this.todosSubject.next(todos));
+    this.reloadPage();
   }
 
   openEditDialog(todo: Todo) {
@@ -48,56 +61,100 @@ export class CompletedTodosPageComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result?.updated) {
-        const current = this.todosSubject.getValue();
-        const index = current.findIndex(t => t.id === result.todo.id);
-        const updated = [...current];
-        updated[index] = result.todo;
-        this.todosSubject.next(updated);
+        this.reloadPage();
 
-        this.snackBar.openFromComponent(SuccessSnackbarComponent, {
-          duration: 2000,
-          data: { message: 'Todo aggiornato con successo!' },
-          panelClass: ['wa']
-        });
+        this.translate.get('TODOS__SUCCESS_SNACKBAR__UPDATE_SUCCESS_MESSAGE').subscribe(
+          msg => {
+            this.snackBar.openFromComponent(SuccessSnackbarComponent, {
+              duration: 2000,
+              data: { message: msg },
+              panelClass: ['wa']
+            });
+          }
+        );
       }
     });
-  }
-
-  private removeTodo(todo: Todo) {
-    const current = this.todosSubject.getValue();
-    const filtered = current.filter(t => t.id !== todo.id);
-    this.todosSubject.next(filtered);
   }
 
   openCompleteDialog($event: Todo) {
-    this.dialog.open(ConfirmationDialogComponent, {
-      data: { title: 'Completare il todo', message: 'Vuoi davvero segnare come completato questo todo?' }
-    }).afterClosed().subscribe(result => {
-      if (result === true) {
-        this.todoService.markCompleted($event)
-          .subscribe({
-            next: () => this.removeTodo($event),
-            error: err => {
-              // TODO: find a way to handle this
-            }
-          });
-      }
+    this.translate.get([
+      'TODOS__CONFIRMATION_DIALOG__COMPLETE_TODO_TITLE',
+      'TODOS__CONFIRMATION_DIALOG__COMPLETE_TODO_MESSAGE'
+    ]).subscribe(translations => {
+      this.dialog.open(ConfirmationDialogComponent, {
+        data: {
+          title: translations['TODOS__CONFIRMATION_DIALOG__COMPLETE_TODO_TITLE'],
+          message: translations['TODOS__CONFIRMATION_DIALOG__COMPLETE_TODO_MESSAGE']
+        }
+      }).afterClosed().subscribe(result => {
+        if (result === true) {
+          this.todoService.markCompleted($event)
+            .subscribe({
+              next: () => this.reloadPage(),
+              error: _ => {
+                this.translate.get('TODOS__ERROR_SNACKBAR__COMPLETE_ERROR_MESSAGE').subscribe(
+                  msg => {
+                    this.snackBar.openFromComponent(ErrorSnackbarComponent, {
+                      duration: 2000,
+                      data: { message: msg },
+                      panelClass: ['wa']
+                    });
+                  }
+                );
+              }
+            });
+        }
+      });
     });
   }
 
-  openDeleteDialog($event: Todo) {
-    this.dialog.open(ConfirmationDialogComponent, {
-      data: { title: 'Eliminare il todo', message: 'Vuoi davvero elimanre questo todo?' }
-    }).afterClosed().subscribe(result => {
-      if (result === true) {
-        this.todoService.delete($event)
-          .subscribe({
-            next: () => this.removeTodo($event),
-            error: err => {
-              // TODO: find a way to handle this
-            }
-          });
-      }
+  openDeleteDialog(todo: Todo) {
+    this.translate.get([
+      'TODOS__CONFIRMATION_DIALOG__DELETE_TODO_TITLE',
+      'TODOS__CONFIRMATION_DIALOG__DELETE_TODO_MESSAGE'
+    ]).subscribe(translations => {
+      this.dialog.open(ConfirmationDialogComponent, {
+        data: {
+          title: translations['TODOS__CONFIRMATION_DIALOG__DELETE_TODO_TITLE'],
+          message: translations['TODOS__CONFIRMATION_DIALOG__DELETE_TODO_MESSAGE']
+        }
+      }).afterClosed().subscribe(result => {
+        if (result === true) {
+          this.todoService.delete(todo)
+            .subscribe({
+              next: () => this.reloadPage(),
+              error: _ => {
+                this.translate.get('TODOS__ERROR_SNACKBAR__DELETE_ERROR_MESSAGE').subscribe(
+                  msg => {
+                    this.snackBar.openFromComponent(ErrorSnackbarComponent, {
+                      duration: 2000,
+                      data: { message: msg },
+                      panelClass: ['wa']
+                    });
+                  }
+                );
+              }
+            });
+        }
+      });
     });
+  }
+
+  handlePageEvent(event: PageEvent) {
+    this.latestQuery = {
+      page: event.pageIndex,
+      size: event.pageSize
+    };
+
+    this.reloadPage();
+  }
+
+  reloadPage() {
+    this.isLoading = true;
+    this.isError = false;
+
+    this.todoService.readAllCompleted(this.latestQuery)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe(todos => this.todosSubject.next(todos));
   }
 }

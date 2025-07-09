@@ -7,6 +7,7 @@ import { TodosService } from './todos.service';
 import { TODOS_API_URL_TOKEN } from '../todos.config';
 import { Todo } from '../models/todo';
 import { TodoDto } from '../dtos/todo.dto';
+import { PageResponse } from '../../../shared/dtos/page-response.dto';
 
 describe('TodosService', () => {
   let service: TodosService;
@@ -20,8 +21,10 @@ describe('TodosService', () => {
     IsCompleted: false,
     DueDate: new Date('2025-01-01')
   };
+  const pagedDto: PageResponse<TodoDto> = PageResponse.of([dummyDto]);
 
   const dummyTodo = Todo.fromDto(dummyDto);
+  const expectedPage: PageResponse<Todo> = PageResponse.of([dummyTodo]);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -59,21 +62,19 @@ describe('TodosService', () => {
   });
 
   describe('readAll', () => {
-    it('should send GET request and return list of mapped Todos', () => {
-      // Arrange
-      const dtos: TodoDto[] = [dummyDto];
-
-      // Act
+    it('should send GET request and return paginated mapped Todos', () => {
+      // Act & Assert
       service.readAll().subscribe(result => {
-        expect(result).toEqual([dummyTodo]);
+        expect(result).toEqual(expectedPage);
       });
 
-      // Assert
+      // Arrange
       const req = httpMock.expectOne(`${apiUrl}`);
       expect(req.request.method).toBe('GET');
-      req.flush(dtos);
+      req.flush(pagedDto);
     });
   });
+
 
   describe('read', () => {
     it('should send GET request by id and return mapped Todo', () => {
@@ -111,19 +112,30 @@ describe('TodosService', () => {
   });
 
   describe('readAllPending', () => {
-    it('should send GET request to /pending and return list of mapped Todos', () => {
-      // Arrange
-      const dtos: TodoDto[] = [dummyDto];
-
-      // Act
+    it('should send GET request to /pending and return paginated mapped Todos', () => {
+      // Act & Assert
       service.readAllPending().subscribe(result => {
-        expect(result).toEqual([dummyTodo]);
+        expect(result).toEqual(expectedPage);
       });
 
-      // Assert
+      // Arrange
       const req = httpMock.expectOne(`${apiUrl}/pending`);
       expect(req.request.method).toBe('GET');
-      req.flush(dtos);
+      req.flush(pagedDto);
+    });
+  });
+
+  describe('readAllCompleted', () => {
+    it('should send GET request to /completed and return paginated mapped Todos', () => {
+      // Act & Assert
+      service.readAllCompleted().subscribe(result => {
+        expect(result).toEqual(expectedPage);
+      });
+
+      // Arrange
+      const req = httpMock.expectOne(`${apiUrl}/completed`);
+      expect(req.request.method).toBe('GET');
+      req.flush(pagedDto);
     });
   });
 
