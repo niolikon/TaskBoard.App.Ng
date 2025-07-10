@@ -1,14 +1,39 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MainPageComponent } from './main-page.component';
-import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
-import { Component, ElementRef } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { AuthenticationApiService } from '../../../security/services/authentication-api.service';
+import { TokenStorageService } from '../../../security/services/token-storage.service';
+import { AuthenticationStateService } from '../../../security';
+import { AUTHENTICATION_MODULE_ROUTE_PATH } from '../../../../features/authentication/authentication.config';
 
-@Component({ selector: 'app-sidebar', template: '' })
+// Component doubles
+@Component({
+  selector: 'app-sidebar',
+  standalone: true,
+  template: ''
+})
 class MockSidebarComponent {}
 
-@Component({ selector: 'app-topbar', template: '' })
+@Component({
+  selector: 'app-topbar',
+  standalone: true,
+  template: ''
+})
 class MockTopbarComponent {}
+
+// Service doubles
+const dummyAuthenticationApiService = {};
+const dummyTokenStorageService = {};
+const isAuthenticatedSubject = new Subject<boolean>();
+const fakeAuthenticationStateService = {
+  isAuthenticated$: isAuthenticatedSubject.asObservable()
+};
+
+const mockRouter = jasmine.createSpyObj('Router', ['navigate']);
+mockRouter.navigate.and.returnValue(Promise.resolve(true));
 
 describe('MainPageComponent', () => {
   let component: MainPageComponent;
@@ -16,29 +41,22 @@ describe('MainPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
+      imports: [
         MainPageComponent,
+        MatSidenavModule,
         MockSidebarComponent,
-        MockTopbarComponent,
-        RouterOutlet
+        MockTopbarComponent
       ],
-      imports: [MatSidenavModule]
+      providers: [
+        { provide: AuthenticationApiService, useValue: dummyAuthenticationApiService },
+        { provide: TokenStorageService, useValue: dummyTokenStorageService },
+        { provide: AuthenticationStateService, useValue: fakeAuthenticationStateService },
+        { provide: Router, useValue: mockRouter }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(MainPageComponent);
     component = fixture.componentInstance;
-
-    // Mock manuale dei ViewChild
-    component.drawer = {
-      close: jasmine.createSpy().and.returnValue(Promise.resolve(true))
-    } as any as MatSidenav;
-
-    component.mainContent = {
-      nativeElement: {
-        focus: jasmine.createSpy()
-      }
-    } as ElementRef;
-
     fixture.detectChanges();
   });
 
@@ -46,12 +64,14 @@ describe('MainPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should close the drawer and focus mainContent on sidebar link click', async () => {
+  it('should redirect to "/" when not authenticated', () => {
+    // Arrange
+    fixture.detectChanges();
+
     // Act
-    await component.onSidebarLinkClicked();
+    isAuthenticatedSubject.next(false);
 
     // Assert
-    expect(component.drawer.close).toHaveBeenCalled();
-    expect(component.mainContent.nativeElement.focus).toHaveBeenCalled();
+    expect(mockRouter.navigate).toHaveBeenCalledWith([AUTHENTICATION_MODULE_ROUTE_PATH + '/login']);
   });
 });

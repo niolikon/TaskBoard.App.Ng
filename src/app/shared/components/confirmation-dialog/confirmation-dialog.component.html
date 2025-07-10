@@ -3,6 +3,6 @@
   <p>{{ data.message }}</p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button (click)="onCancel()">{{ 'SHARED__CONFIRMATION_DIALOG_COMPONENT__BUTTON_LABEL_NO' | translate }}</button>
-  <button mat-raised-button color="primary" (click)="onConfirm()">{{ 'SHARED__CONFIRMATION_DIALOG_COMPONENT__BUTTON_LABEL_YES' | translate }}</button>
+  <button mat-button (click)="onCancel()" tabindex="0" role="button" #cancelButton>{{ 'SHARED__CONFIRMATION_DIALOG_COMPONENT__BUTTON_LABEL_NO' | translate }}</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()"  tabindex="0" role="button">{{ 'SHARED__CONFIRMATION_DIALOG_COMPONENT__BUTTON_LABEL_YES' | translate }}</button>
 </mat-dialog-actions>

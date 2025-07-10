@@ -11,10 +11,22 @@
   "TODOS__EDIT_FORM_COMPONENT__BUTTON_LABEL_CANCEL": "Annulla",
   "TODOS__EDIT_FORM_COMPONENT__BUTTON_LABEL_SUBMIT": "Salva",
 
+  "TODOS__PREVIEW_COMPONENT__BUTTON_TOOLTIP_EDIT": "Modifica",
   "TODOS__PREVIEW_COMPONENT__BUTTON_TOOLTIP_DELETE": "Elimina",
   "TODOS__PREVIEW_COMPONENT__BUTTON_TOOLTIP_COMPLETE": "Completa",
 
   "TODOS__PENDING_TODOS_PAGE__BUTTON_ARIA_LABEL": "Aggiungi task",
+
+  "TODOS__SUCCESS_SNACKBAR__CREATE_SUCCESS_MESSAGE": "Task creato correttamente.",
+  "TODOS__SUCCESS_SNACKBAR__UPDATE_SUCCESS_MESSAGE": "Modifiche salvate con successo.",
+
+  "TODOS__CONFIRMATION_DIALOG__COMPLETE_TODO_TITLE": "Conferma completamento",
+  "TODOS__CONFIRMATION_DIALOG__COMPLETE_TODO_MESSAGE": "Sei sicuro di voler segnare questo task come completato?",
+  "TODOS__ERROR_SNACKBAR__COMPLETE_ERROR_MESSAGE": "Non è stato possibile segnare il task come completato.",
+
+  "TODOS__CONFIRMATION_DIALOG__DELETE_TODO_TITLE": "Conferma eliminazione",
+  "TODOS__CONFIRMATION_DIALOG__DELETE_TODO_MESSAGE": "Sei sicuro di voler eliminare questo task?",
+  "TODOS__ERROR_SNACKBAR__DELETE_ERROR_MESSAGE": "Non è stato possibile eliminare il task.",
 
   "TODOS__EDIT_PAGE__TITLE_LABEL": "Modifica task",
   "TODOS__EDIT_PAGE__CLOSE_BUTTON_ARIA_LABEL": "Chiudi",

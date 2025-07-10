@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Todo } from '../../models/todo';
 import { TodosService } from '../../services/todos.service';
-import {TranslatePipe} from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-todo-edit-page',
@@ -13,10 +13,10 @@ import {TranslatePipe} from '@ngx-translate/core';
     TodoEditFormComponent,
     MatIconModule,
     MatButtonModule,
-    TranslatePipe
+    TranslateModule
   ],
   templateUrl: './todo-edit-page.component.html',
-  styleUrl: './todo-edit-page.component.scss'
+  styleUrls: ['./todo-edit-page.component.scss']
 })
 export class TodoEditPageComponent {
   backendError: string | null;

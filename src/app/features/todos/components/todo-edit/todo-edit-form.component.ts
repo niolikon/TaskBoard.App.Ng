@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-todo-edit',
+  standalone: true,
   imports: [
     ReactiveFormsModule,
     MatCardModule,
@@ -25,7 +26,7 @@ import { MatButtonModule } from '@angular/material/button';
     TranslateModule,
   ],
   templateUrl: './todo-edit-form.component.html',
-  styleUrl: './todo-edit-form.component.scss'
+  styleUrls: ['./todo-edit-form.component.scss']
 })
 export class TodoEditFormComponent implements OnInit, OnChanges {
   @Input() todo?: Todo | null;

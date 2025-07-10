@@ -1,9 +1,16 @@
 .todo-card {
-  width: 200px;
-  height: 250px;
+  width: 250px;
+  height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: box-shadow 0.2s, background-color 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: #f9f9f9;
+  }
 }
 
 .todo-title {

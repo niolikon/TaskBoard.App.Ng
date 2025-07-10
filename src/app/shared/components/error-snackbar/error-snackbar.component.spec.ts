@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
-import { SuccessSnackbarComponent } from './success-snackbar.component';
+import { ErrorSnackbarComponent } from './error-snackbar.component';
 
-describe('SuccessSnackbarComponent', () => {
-  let component: SuccessSnackbarComponent;
-  let fixture: ComponentFixture<SuccessSnackbarComponent>;
-  let snackBarRefSpy: jasmine.SpyObj<MatSnackBarRef<SuccessSnackbarComponent>>;
+describe('ErrorSnackbarComponent', () => {
+  let component: ErrorSnackbarComponent;
+  let fixture: ComponentFixture<ErrorSnackbarComponent>;
+  let snackBarRefSpy: jasmine.SpyObj<MatSnackBarRef<ErrorSnackbarComponent>>;
 
   const dummyData = { message: 'Test message' };
 
@@ -15,7 +15,7 @@ describe('SuccessSnackbarComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        SuccessSnackbarComponent,
+        ErrorSnackbarComponent,
         TranslateModule.forRoot()
       ],
       providers: [
@@ -24,7 +24,7 @@ describe('SuccessSnackbarComponent', () => {
       ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SuccessSnackbarComponent);
+    fixture = TestBed.createComponent(ErrorSnackbarComponent);
     component = fixture.componentInstance;
   });
 
