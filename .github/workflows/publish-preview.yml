@@ -41,7 +41,7 @@ jobs:
         run: npm ci
 
       - name: Build - Run tests
-        run: npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage
+        run: npm run test -- --watch=false --browsers=ChromeHeadlessNoSandbox --code-coverage
 
       - name: Build - Compile Angular app
         run: npm run build -- --configuration=production
