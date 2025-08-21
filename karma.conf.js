@@ -12,7 +12,7 @@ module.exports = function (config) {
     ],
     reporters: ['progress', 'junit', 'coverage'],
     junitReporter: {
-      outputDir: 'test-results/junit',   // cartella che poi zippiamo in CI
+      outputDir: 'test-results/junit',
       outputFile: 'karma-junit.xml',
       useBrowserName: false
     },
@@ -24,6 +24,18 @@ module.exports = function (config) {
         { type: 'text-summary' }
       ]
     },
-    browsers: ['ChromeHeadless']
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: [
+          '--no-sandbox',
+          '--disable-gpu',
+          '--disable-dev-shm-usage',
+          '--disable-setuid-sandbox',
+          '--disable-software-rasterizer'
+        ]
+      }
+    },
+    browsers: ['Chrome']
   });
 };
