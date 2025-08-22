@@ -1,6 +1,6 @@
 # TaskBoard.App.Ng
-[![Build Status](https://github.com/niolikon/TaskBoard.App.Ng/actions/workflows/nodejs.yml/badge.svg)](https://github.com/niolikon/TaskBoard.App.Ng/actions)  
-[![Package](https://github.com/niolikon/TaskBoard.App.Ng/actions/workflows/release-nodejs.yml/badge.svg)](https://github.com/niolikon/TaskBoard.App.Ng/actions)
+[![Build Status](https://github.com/niolikon/TaskBoard.App.Ng/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/niolikon/TaskBoard.App.Ng/actions)  
+[![Package](https://github.com/niolikon/TaskBoard.App.Ng/actions/workflows/publish-release.yml/badge.svg)](https://github.com/niolikon/TaskBoard.App.Ng/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 Task Board WebApp (Angular Frontend)
