@@ -20,7 +20,15 @@
   "TODOS__PAGE__LOADING_ERROR": "An error occurred while loading tasks.",
   "TODOS__PAGE__RETRY": "Retry",
   "TODOS__PAGE__NO_RESULTS": "No tasks available.",
-  "TODOS__PAGE__PAGINATOR_ARIA_LABEL": "Select page",
+
+  "TODOS__PAGINATOR__ARIA_LABEL": "Select page",
+  "TODOS__PAGINATOR__ITEMS_PER_PAGE": "Items per page",
+  "TODOS__PAGINATOR__NEXT_PAGE": "Next page",
+  "TODOS__PAGINATOR__PREVIOUS_PAGE": "Previous page",
+  "TODOS__PAGINATOR__FIRST_PAGE": "First page",
+  "TODOS__PAGINATOR__LAST_PAGE": "Last page",
+  "TODOS__PAGINATOR__RANGE_LABEL": "{{start}}–{{end}} of {{length}}",
+  "TODOS__PAGINATOR__RANGE_LABEL_EMPTY": "0 of {{length}}",
 
   "TODOS__SUCCESS_SNACKBAR__CREATE_SUCCESS_MESSAGE": "Task created successfully.",
   "TODOS__SUCCESS_SNACKBAR__UPDATE_SUCCESS_MESSAGE": "Changes saved successfully.",

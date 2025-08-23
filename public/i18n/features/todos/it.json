@@ -20,7 +20,15 @@
   "TODOS__PAGE__LOADING_ERROR" : "Si è verificato un errore durante il caricamento dei task.",
   "TODOS__PAGE__RETRY" : "Riprova",
   "TODOS__PAGE__NO_RESULTS" : "Nessun task disponibile.",
-  "TODOS__PAGE__PAGINATOR_ARIA_LABEL": "Seleziona una pagina",
+
+  "TODOS__PAGINATOR__ARIA_LABEL": "Seleziona una pagina",
+  "TODOS__PAGINATOR__ITEMS_PER_PAGE": "Elementi per pagina",
+  "TODOS__PAGINATOR__NEXT_PAGE": "Pagina successiva",
+  "TODOS__PAGINATOR__PREVIOUS_PAGE": "Pagina precedente",
+  "TODOS__PAGINATOR__FIRST_PAGE": "Prima pagina",
+  "TODOS__PAGINATOR__LAST_PAGE": "Ultima pagina",
+  "TODOS__PAGINATOR__RANGE_LABEL": "{{start}}–{{end}} di {{length}}",
+  "TODOS__PAGINATOR__RANGE_LABEL_EMPTY": "0 di {{length}}",
 
   "TODOS__SUCCESS_SNACKBAR__CREATE_SUCCESS_MESSAGE": "Task creato correttamente.",
   "TODOS__SUCCESS_SNACKBAR__UPDATE_SUCCESS_MESSAGE": "Modifiche salvate con successo.",

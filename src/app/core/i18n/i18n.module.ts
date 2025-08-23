@@ -7,6 +7,8 @@ import { LanguageSelectionService } from './services/language-selection.service'
 import { FeatureLocalizationLoaderService } from './services/feature-localization-loader.service';
 import { LocaleResolverService } from './services/locale-resolver.service';
 import { forkJoin } from 'rxjs';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { matPaginatorIntlFactory } from './factory/paginator-intl.factory';
 
 export function httpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, I18N_CORE_TRANSLATIONS_PATH, '.json');
@@ -28,7 +30,8 @@ export function localeIdFactory(resolver: LocaleResolverService): string {
   ],
   exports: [TranslateModule],
   providers: [
-    { provide: LOCALE_ID, useFactory: localeIdFactory, deps: [LocaleResolverService] }
+    { provide: LOCALE_ID, useFactory: localeIdFactory, deps: [LocaleResolverService] },
+    { provide: MatPaginatorIntl, useFactory: matPaginatorIntlFactory, deps: [TranslateService] }
   ]
 })
 export class CoreI18nModule {
