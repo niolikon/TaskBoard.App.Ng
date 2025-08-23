@@ -13,7 +13,7 @@ import { AsyncPipe, CommonModule, NgForOf } from '@angular/common';
 import { BehaviorSubject, finalize } from 'rxjs';
 import { SuccessSnackbarComponent } from '../../../../shared/components/success-snackbar/success-snackbar.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TranslateService } from '@ngx-translate/core';
+import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import { PageResponse } from '../../../../shared/dtos/page-response.dto';
 import { PageableQuery } from '../../../../shared/interfaces/pageable-query.interface';
 import {ErrorSnackbarComponent} from '../../../../shared/components/error-snackbar/error-snackbar.component';
@@ -29,7 +29,8 @@ import {ErrorSnackbarComponent} from '../../../../shared/components/error-snackb
     MatProgressSpinnerModule,
     CommonModule,
     NgForOf,
-    AsyncPipe
+    AsyncPipe,
+    TranslatePipe
   ],
   templateUrl: './completed-todos-page.component.html',
   styleUrl: './completed-todos-page.component.scss'

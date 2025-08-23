@@ -5,8 +5,8 @@
   </div>
 
   <div class="error-container" *ngIf="isError">
-    <p class="error-text">Errore durante il caricamento dei dati. Riprova più tardi.</p>
-    <button mat-raised-button color="warn" (click)="reloadPage()">Riprova</button>
+    <p class="error-text">{{ 'TODOS__PAGE__LOADING_ERROR' | translate }}</p>
+    <button mat-raised-button color="warn" (click)="reloadPage()">{{ 'TODOS__PAGE__RETRY' | translate }}</button>
   </div>
 
   <ng-container *ngIf="todos$ | async as page">
@@ -28,13 +28,13 @@
                        [length]="page.elementsTotal"
                        [pageSize]="page.pageSize"
                        [pageSizeOptions]="[5, 10, 25, 100]"
-                       aria-label="Select page">
+                       [attr.aria-label]="'TODOS__PAGE__PAGINATOR_ARIA_LABEL' | translate">
         </mat-paginator>
       </div>
     </div>
 
     <ng-template #noResults>
-      <p>Nessun risultato disponibile.</p>
+      <p>{{ 'TODOS__PAGE__NO_RESULTS' | translate }}</p>
     </ng-template>
   </ng-container>
 
