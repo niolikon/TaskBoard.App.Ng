@@ -1,8 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import * as common from '@angular/common';
 import { LocaleResolverService } from './locale-resolver.service';
-
-
 import {
   I18N_DEFAULT_LOCALE,
   I18N_LANGUAGE_TO_LOCALE
@@ -28,8 +25,6 @@ describe('LocaleResolverService', () => {
   // --------------------------------------------------------------------
 
   beforeEach(() => {
-    spyOn(common, 'registerLocaleData').and.stub();
-
     TestBed.configureTestingModule({
       providers: [LocaleResolverService]
     });
@@ -43,12 +38,15 @@ describe('LocaleResolverService', () => {
   });
 
   describe('init', () => {
-    it('should register locales and set the locale property', () => {
+    it('should call registerLocalesOnce once and set the locale', () => {
+      // Arrange
+      const regSpy = spyOn<any>(service as any, 'registerLocalesOnce').and.callThrough();
+
       // Act
       service.init();
 
       // Assert
-      expect(common.registerLocaleData).toHaveBeenCalledTimes(2);
+      expect(regSpy).toHaveBeenCalledTimes(1);
       expect(service.locale).toBeTruthy();
     });
   });
