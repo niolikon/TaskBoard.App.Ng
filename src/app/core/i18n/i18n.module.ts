@@ -31,7 +31,7 @@ export function localeIdFactory(resolver: LocaleResolverService): string {
   exports: [TranslateModule],
   providers: [
     { provide: LOCALE_ID, useFactory: localeIdFactory, deps: [LocaleResolverService] },
-    { provide: MatPaginatorIntl, useFactory: matPaginatorIntlFactory, deps: [TranslateService, LanguageSelectionService] }
+    { provide: MatPaginatorIntl, useFactory: matPaginatorIntlFactory, deps: [TranslateService] }
   ]
 })
 export class CoreI18nModule {
