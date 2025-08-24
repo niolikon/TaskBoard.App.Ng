@@ -31,7 +31,7 @@ export function localeIdFactory(resolver: LocaleResolverService): string {
   exports: [TranslateModule],
   providers: [
     { provide: LOCALE_ID, useFactory: localeIdFactory, deps: [LocaleResolverService] },
-    { provide: MatPaginatorIntl, useFactory: matPaginatorIntlFactory, deps: [TranslateService] }
+    { provide: MatPaginatorIntl, useFactory: matPaginatorIntlFactory, deps: [TranslateService, LanguageSelectionService] }
   ]
 })
 export class CoreI18nModule {
@@ -52,6 +52,7 @@ export class CoreI18nModule {
       featureLocalizationLoaderService.preloadSharedLocalizations()
     ]).subscribe(() => {
       languageSelectionService.setLanguage(browserLanguage);
+      localeResolverService.resolveLocaleFromLanguage(browserLanguage);
     });
   }
 }

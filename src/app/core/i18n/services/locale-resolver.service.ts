@@ -51,4 +51,9 @@ export class LocaleResolverService {
   private localeToLanguage(locale: string): SupportedLanguage {
     return (locale.split('-')[0] as SupportedLanguage) ?? I18N_DEFAULT_LANGUAGE;
   }
+
+  public resolveLocaleFromLanguage(browserLanguage: string): void {
+    const fromBrowser = I18N_LANGUAGE_TO_LOCALE[browserLanguage];
+    this.locale = fromBrowser ?? I18N_DEFAULT_LOCALE;
+  }
 }
