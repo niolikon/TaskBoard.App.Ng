@@ -17,6 +17,10 @@
 
   "TODOS__PENDING_TODOS_PAGE__BUTTON_ARIA_LABEL": "Add task",
 
+  "TODOS__PAGE__LOADING_ERROR": "An error occurred while loading tasks.",
+  "TODOS__PAGE__RETRY": "Retry",
+  "TODOS__PAGE__NO_RESULTS": "No tasks available.",
+
   "TODOS__SUCCESS_SNACKBAR__CREATE_SUCCESS_MESSAGE": "Task created successfully.",
   "TODOS__SUCCESS_SNACKBAR__UPDATE_SUCCESS_MESSAGE": "Changes saved successfully.",
 

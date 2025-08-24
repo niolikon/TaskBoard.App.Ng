@@ -1,5 +1,14 @@
 {
   "CORE__FORM_FIELD__VALUE_IS_MANDATORY": "Campo obbligatorio",
   "CORE__FORM_FIELD__VALUE_IS_TOO_SHORT": "Valore troppo breve",
-  "CORE__FORM_FIELD__VALUE_IS_TOO_LONG": "Valore troppo lungo"
+  "CORE__FORM_FIELD__VALUE_IS_TOO_LONG": "Valore troppo lungo",
+
+  "CORE__PAGINATOR__ARIA_LABEL": "Seleziona una pagina",
+  "CORE__PAGINATOR__ITEMS_PER_PAGE": "Elementi per pagina",
+  "CORE__PAGINATOR__NEXT_PAGE": "Pagina successiva",
+  "CORE__PAGINATOR__PREVIOUS_PAGE": "Pagina precedente",
+  "CORE__PAGINATOR__FIRST_PAGE": "Prima pagina",
+  "CORE__PAGINATOR__LAST_PAGE": "Ultima pagina",
+  "CORE__PAGINATOR__RANGE_LABEL": "{{start}}–{{end}} di {{length}}",
+  "CORE__PAGINATOR__RANGE_LABEL_EMPTY": "0 di {{length}}"
 }

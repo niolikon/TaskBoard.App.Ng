@@ -29,6 +29,12 @@
   color: #555;
   margin-bottom: 0.5rem;
   word-wrap: break-word;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .todo-due-date {
